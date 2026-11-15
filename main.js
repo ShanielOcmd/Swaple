@@ -9,7 +9,25 @@ const WORD_BANK = [
   { word: "NODE", hint: "JavaScript environment outside the browser" },
   { word: "CODE", hint: "Instructions written for a computer" },
   { word: "SCRIPT", hint: "The code file that drives web interactions" },
-  { word: "COMPILER", hint: "Translates high-level code to machine code" }
+  { word: "COMPILER", hint: "Translates high-level code to machine code" },
+  { word: "BYTE", hint: "Basic unit of digital information" },
+  { word: "PING", hint: "Network utility to test reachability" },
+  { word: "CACHE", hint: "Temporary data storage for quick access" },
+  { word: "STACK", hint: "Last-in, first-out data structure" },
+  { word: "QUERY", hint: "A request for data from a database" },
+  { word: "CLOUD", hint: "Servers accessed over the internet" },
+  { word: "SYNTAX", hint: "The grammar and spelling rules of a programming language" },
+  { word: "WIDGET", hint: "An interactive UI component or element" },
+  { word: "ZEBRA", hint: "Striped animal or alternate color striping in tables" },
+  { word: "PIXEL", hint: "The smallest controllable element on a screen" },
+  { word: "VECTOR", hint: "A mathematical quantity with magnitude and direction" },
+  { word: "SOCKET", hint: "An endpoint for network communication" },
+  { word: "ZEALOUS", hint: "Showing great energy or enthusiastic devotion" },
+  { word: "FIREWALL", hint: "Network security system monitoring traffic" },
+  { word: "DATABASE", hint: "An organized collection of structured information" },
+  { word: "QUANTUM", hint: "The minimum amount of any physical entity involved in an interaction" },
+  { word: "DEBUGGER", hint: "Tool used to test and find errors in code" }
+
 ];
 
 const START_TIME = 60;   
