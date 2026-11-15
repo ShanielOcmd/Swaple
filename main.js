@@ -58,13 +58,19 @@ const timerDisplay = document.getElementById("timer-display");
 const solveInput = document.getElementById("solve-input");
 const solveBtn = document.getElementById("solve-btn");
 
+// UPDATE HEADER TITLE TO "SWAPLE"
+const headerTitle = document.querySelector("h1");
+if (headerTitle) {
+  headerTitle.textContent = "SWAPLE";
+}
+
 // CLEANUP LEFTOVER ELEMENTS FROM VITE HOT-RELOADING
 ["inline-next-btn", "inline-retry-btn", "combo-display", "freeze-btn", "hint-container", "arcade-toast", "mechanic-notice", "juice-styles"].forEach(id => {
   const existing = document.getElementById(id);
   if (existing) existing.remove();
 });
 
-// ARCADE TOAST NOTIFICATION BANNER (REPLACES ugly browser alerts)
+// ARCADE TOAST NOTIFICATION BANNER
 const arcadeToast = document.createElement("div");
 arcadeToast.id = "arcade-toast";
 arcadeToast.style.fontSize = "1rem";
@@ -259,8 +265,8 @@ juiceStyles.innerHTML = `
     transition: min-width 0.3s ease, padding 0.3s ease;
   }
   #current-letter.warning-mode {
-    min-width: 240px; 
-    padding: 0 12px;
+    min-width: 280px; 
+    padding: 0 16px;
   }
   .preview-heavy-bag {
     font-size: 1rem;
@@ -572,7 +578,8 @@ function generateNextLetter() {
     const currentGuess = gameState.slots.join("");
     if (currentGuess !== gameState.activeSolution) {
       currentLetterDiv.classList.add("warning-mode");
-      currentLetterDiv.innerHTML = `<div style="font-size: 0.85rem; font-weight: bold; color: #ef4444; text-align: center; line-height: 1.2; white-space: nowrap;">Incorrect word - swap letters</div>`;
+      // LARGER, BOLDER WARNING TEXT IN THE GREEN TILE CONTAINER
+      currentLetterDiv.innerHTML = `<div style="font-size: 1.05rem; font-weight: 800; color: #ef4444; text-align: center; line-height: 1.3; white-space: nowrap; text-transform: uppercase;">⚠️ Incorrect Word<br>Swap Letters!</div>`;
     } else {
       currentLetterDiv.classList.remove("warning-mode");
       currentLetterDiv.textContent = "-";
@@ -994,7 +1001,8 @@ solveInput.addEventListener("input", () => {
     endGame(true, "You solved the word instantly via typing!");
   } else if (!gameState.slots.includes("")) {
     currentLetterDiv.classList.add("warning-mode");
-    currentLetterDiv.innerHTML = `<div style="font-size: 0.85rem; font-weight: bold; color: #ef4444; text-align: center; line-height: 1.2; white-space: nowrap;">Incorrect word - swap letters</div>`;
+    // LARGER, BOLDER WARNING TEXT IN THE GREEN TILE CONTAINER
+    currentLetterDiv.innerHTML = `<div style="font-size: 1.05rem; font-weight: 800; color: #ef4444; text-align: center; line-height: 1.3; white-space: nowrap; text-transform: uppercase;">⚠️ Incorrect Word<br>Swap Letters!</div>`;
   }
 });
 
