@@ -5,7 +5,53 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
+/* Ensure body and html fit the viewport and allow smooth scrolling if needed */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #0f172a;
+  color: #f8fafc;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Aligns content to the top rather than stretching */
+  overflow-x: hidden;
+}
+
+/* Main game container with balanced padding */
+#game-container, #app {
+  width: 100%;
+  max-width: 500px;
+  margin: 10px auto;
+  padding: 15px 20px 40px 20px; /* Generous bottom padding so nothing cuts off */
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Tighten up vertical margins on elements so they stack nicely upwards */
+#slots-board {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+#freeze-btn {
+  margin: 8px auto !important;
+}
+
+#hint-container {
+  margin: 10px auto !important;
+}
+
+
+/*body {
   background-color: #121213;
   color: #ffffff;
   display: flex;
@@ -231,49 +277,4 @@ button:disabled {
   60%  { transform: translate(-1px, -0.5px) rotate(-0.5deg); }
   80%  { transform: translate(1px, 0.5px) rotate(0.5deg); }
   100% { transform: translate(0, 0) rotate(0deg); }
-}
-
-/* Ensure body and html fit the viewport and allow smooth scrolling if needed */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100vh;
-  background-color: #0f172a;
-  color: #f8fafc;
-  font-family: inherit;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start; /* Aligns content to the top rather than stretching */
-  overflow-x: hidden;
-}
-
-/* Main game container with balanced padding */
-#game-container, #app {
-  width: 100%;
-  max-width: 500px;
-  margin: 10px auto;
-  padding: 15px 20px 40px 20px; /* Generous bottom padding so nothing cuts off */
-  box-sizing: border-box;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Tighten up vertical margins on elements so they stack nicely upwards */
-#slots-board {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin: 15px 0;
-}
-
-#freeze-btn {
-  margin: 8px auto !important;
-}
-
-#hint-container {
-  margin: 10px auto !important;
 }
