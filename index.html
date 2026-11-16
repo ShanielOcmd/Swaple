@@ -1,50 +1,59 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SWAPLE - Arcade Word Puzzle</title>
-  </head>
-  <body>
-    <!-- INSTRUCTION SCREEN OVERLAY -->
-    <div id="instruction-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0f172a; color: #f8fafc; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; font-family: inherit;">
-      <div style="max-width: 500px; width: 100%; background: #1e293b; padding: 30px; border-radius: 12px; border: 2px solid #3b82f6; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: left;">
-        <h1 style="color: #3b82f6; text-align: center; margin-top: 0; font-size: 2rem;">🔤 SWAPLE</h1>
-        <p style="text-align: center; color: #94a3b8; margin-bottom: 20px;">Arcade Word Puzzle Mechanics</p>
-        
-        <ul style="line-height: 1.6; margin-bottom: 25px; padding-left: 20px; color: #e2e8f0;">
-          <li><strong>Place Letters:</strong> Click empty slots to place incoming letters from your bag.</li>
-          <li><strong>Swap Tiles:</strong> Click a filled tile and another tile to swap their positions.</li>
-          <li><strong>Heavy Tiles (Q, W, X, Z):</strong> Cost <strong>2 swaps</strong> instead of 1 to move!</li>
-          <li><strong>Bomb Tiles (💣):</strong> Defuse them by placing the correct letter within 4 turns, or they explode (-10s penalty).</li>
-          <li><strong>Freeze Power:</strong> Sacrifice 1 swap and 10s to freeze the clock for 8 seconds.</li>
-        </ul>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SWAPLE</title>
+  
+  <!-- Move your link tag right here, inside the head block! -->
+  <link rel="stylesheet" href="/style.css" /> 
+</head>
+<body>
 
-        <!-- CENTERED BUTTON -->
-        <div style="text-align: center;">
-          <button id="start-game-btn" style="background-color: #22c55e; color: white; border: none; padding: 14px 32px; font-size: 1.1rem; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 12px rgba(34,197,94,0.4); display: inline-block;">
-            Start Playing ➔
-          </button>
-        </div>
-      </div>
+ <!-- INSTRUCTION SCREEN OVERLAY -->
+<div id="instruction-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0f172a; color: #f8fafc; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; font-family: inherit;">
+  <div style="max-width: 500px; width: 100%; background: #1e293b; padding: 30px; border-radius: 12px; border: 2px solid #3b82f6; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: left;">
+    <h1 style="color: #3b82f6; text-align: center; margin-top: 0; font-size: 2rem;">🔤 SWAPLE</h1>
+    <p style="text-align: center; color: #94a3b8; margin-bottom: 20px;">Arcade Word Puzzle Mechanics</p>
+    
+    <ul style="line-height: 1.6; margin-bottom: 25px; padding-left: 20px; color: #e2e8f0;">
+      <li><strong>Place Letters:</strong> Click empty slots to place incoming letters from your bag.</li>
+      <li><strong>Swap Tiles:</strong> Click a filled tile and another tile to swap their positions.</li>
+      <li><strong>Heavy Tiles (Q, W, X, Z):</strong> Cost <strong>2 swaps</strong> instead of 1 to move!</li>
+      <li><strong>Bomb Tiles (💣):</strong> Defuse them by placing the correct letter within 4 turns, or they explode (-10s penalty).</li>
+      <li><strong>Freeze Power:</strong> Sacrifice 1 swap and 10s to freeze the clock for 8 seconds.</li>
+    </ul>
+
+    <!-- CENTERED BUTTON CONTAINER -->
+    <div style="text-align: center;">
+      <button id="start-game-btn" style="background-color: #22c55e; color: white; border: none; padding: 14px 32px; font-size: 1.1rem; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 12px rgba(34,197,94,0.4); display: inline-block;">
+        Start Playing ➔
+      </button>
     </div>
+  </div>
+</div>
 
-    <!-- MAIN GAME CONTAINER -->
-    <div id="app">
-      <h1>SWAPLE</h1>
-      <div id="timer-display">Time: 60s | Score: 0</div>
-      <div id="slots-board"></div>
-      <div id="current-letter">-</div>
-      <button id="swap-btn" disabled>Swaps Available</button>
-      
-      <div class="input-group">
-        <input type="text" id="solve-input" placeholder="Type guess..." />
-        <button id="solve-btn">Submit Guess</button>
-      </div>
+  <div id="game-container">
+    <h1>SWAPLE</h1>
+    <div id="timer-display">Time: 60s</div>
+    
+    <!-- This is where your empty slots will appear -->
+    <div id="slots-board"></div>
+    
+    <!-- NEW: This is the box where you type your final guess -->
+    <div id="guess-zone" style="margin-bottom: 30px; width: 100%;">
+      <input type="text" id="solve-input" placeholder="Type whole word..." maxlength="10" style="padding: 10px; font-size: 1rem; border-radius: 6px; border: 1px solid #3a3a3c; background: #1a1a1b; color: white; width: 60%; text-transform: uppercase; margin-right: 10px;">
+      <button id="solve-btn" style="width: auto; padding: 10px 20px;">Solve!</button>
     </div>
+    
+    <!-- This shows the single letter waiting to be placed -->
+    <div id="active-letter-zone">
+      <p>Next Letter:</p>
+      <div id="current-letter">?</div>
+      <button id="swap-btn">Swap Letter (5 left)</button>
+    </div>
+  </div>
 
-    <script type="module" src="/main.js"></script>
-  </body>
+  <script type="module" src="./main.js"></script>
+</body>
 </html>
