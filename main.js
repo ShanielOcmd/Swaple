@@ -26,7 +26,16 @@ const WORD_BANK = [
   { word: "FIREWALL", hint: "Network security system monitoring traffic" },
   { word: "DATABASE", hint: "An organized collection of structured information" },
   { word: "QUANTUM", hint: "The minimum amount of any physical entity involved in an interaction" },
-  { word: "DEBUGGER", hint: "Tool used to test and find errors in code" }
+  { word: "DEBUGGER", hint: "Tool used to test and find errors in code" },
+  { word: "BUFFER", hint: "A temporary memory area used while data is transferring" },
+  { word: "KERNEL", hint: "The core heart of an operating system" },
+  { word: "ROUTER", hint: "Hardware device that forwards data packets between computer networks" },
+  { word: "QUBIT", hint: "The basic unit of information in quantum computing" },
+  { word: "MATRIX", hint: "A rectangular array or table of numbers or data" },
+  { word: "DAEMON", hint: "A computer program that runs as a background process" },
+  { word: "BACKUP", hint: "A copy of computer data taken in case the original is lost" },
+  { word: "ZIGZAG", hint: "A line or course having sharp alternate right and left turns" },
+  { word: "PIPELINE", hint: "A chain of processing elements arranged so the output of each is the input of the next" }
 
 ];
 
