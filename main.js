@@ -1153,6 +1153,21 @@ swapBtn.addEventListener("click", (e) => {
 inlineNextBtn.addEventListener("click", initGame);
 inlineRetryBtn.addEventListener("click", initGame);
 
-// LOAD SAVED GAME PROGRESS ON STARTUP, THEN LAUNCH
-loadGameProgress();
-initGame();
+// HIDE GAME UNTIL INSTRUCTIONS ARE CLOSED, THEN INITIALIZE
+const instructionScreen = document.getElementById("instruction-screen");
+const startGameBtn = document.getElementById("start-game-btn");
+
+if (startGameBtn && instructionScreen) {
+  // Pause/prevent game timers from running while looking at instructions
+  gameState.gameActive = false;
+
+  startGameBtn.addEventListener("click", () => {
+    instructionScreen.style.display = "none"; // Hide instructions
+    loadGameProgress();
+    initGame(); // Kick off the actual game timer and first level!
+  });
+} else {
+  // Fallback if HTML wasn't added yet
+  loadGameProgress();
+  initGame();
+}
