@@ -11,9 +11,9 @@
 </head>
 <body>
 
-  <!-- INSTRUCTION SCREEN OVERLAY -->
+ <!-- INSTRUCTION SCREEN OVERLAY -->
 <div id="instruction-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0f172a; color: #f8fafc; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; font-family: inherit;">
-  <div style="max-width: 500px; background: #1e293b; padding: 30px; border-radius: 12px; border: 2px solid #3b82f6; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: left;">
+  <div style="max-width: 500px; width: 100%; background: #1e293b; padding: 30px; border-radius: 12px; border: 2px solid #3b82f6; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: left;">
     <h1 style="color: #3b82f6; text-align: center; margin-top: 0; font-size: 2rem;">🔤 SWAPLE</h1>
     <p style="text-align: center; color: #94a3b8; margin-bottom: 20px;">Arcade Word Puzzle Mechanics</p>
     
@@ -25,9 +25,12 @@
       <li><strong>Freeze Power:</strong> Sacrifice 1 swap and 10s to freeze the clock for 8 seconds.</li>
     </ul>
 
-    <button id="start-game-btn" style="width: 100%; background-color: #22c55e; color: white; border: none; padding: 14px; font-size: 1.1rem; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 12px rgba(34,197,94,0.4);">
-      Start Playing ➔
-    </button>
+    <!-- CENTERED BUTTON CONTAINER -->
+    <div style="text-align: center;">
+      <button id="start-game-btn" style="background-color: #22c55e; color: white; border: none; padding: 14px 32px; font-size: 1.1rem; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 12px rgba(34,197,94,0.4); display: inline-block;">
+        Start Playing ➔
+      </button>
+    </div>
   </div>
 </div>
 
