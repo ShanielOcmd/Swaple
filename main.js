@@ -1,7 +1,7 @@
 import './style.css'; 
 
 // ==========================================
-// 1. GAME CONFIGURATION & WORD BANK
+// 1. GAME CONFIGURATION & WORD BANK (32 WORDS)
 // ==========================================
 const WORD_BANK = [
   { word: "VITE", hint: "A blazing fast modern frontend build tool" },
@@ -36,7 +36,6 @@ const WORD_BANK = [
   { word: "BACKUP", hint: "A copy of computer data taken in case the original is lost" },
   { word: "ZIGZAG", hint: "A line or course having sharp alternate right and left turns" },
   { word: "PIPELINE", hint: "A chain of processing elements arranged so the output of each is the input of the next" }
-
 ];
 
 const START_TIME = 60;   
@@ -76,7 +75,31 @@ let gameState = {
 let selectedSlotIndex = null;
 
 // ==========================================
-// 3. DOM ELEMENTS & DYNAMIC UI INJECTIONS
+// 3. BROWSER LOCALSTORAGE PERSISTENCE (OPTION 1)
+// ==========================================
+function saveGameProgress() {
+  const saveData = {
+    level: gameState.currentLevel,
+    score: gameState.score
+  };
+  localStorage.setItem("swaple_save", JSON.stringify(saveData));
+}
+
+function loadGameProgress() {
+  const savedData = localStorage.getItem("swaple_save");
+  if (savedData) {
+    try {
+      const parsed = JSON.parse(savedData);
+      gameState.currentLevel = parsed.level || 1;
+      gameState.score = parsed.score || 0;
+    } catch (e) {
+      console.error("Could not parse save data", e);
+    }
+  }
+}
+
+// ==========================================
+// 4. DOM ELEMENTS & DYNAMIC UI INJECTIONS
 // ==========================================
 const slotsBoard = document.getElementById("slots-board");
 const currentLetterDiv = document.getElementById("current-letter");
@@ -355,7 +378,7 @@ hintContainer.appendChild(hintTextDisplay);
 slotsBoard.parentNode.insertBefore(hintContainer, slotsBoard.nextSibling);
 
 // ==========================================
-// 4. HELPER UTILITIES & JUICE GENERATORS
+// 5. HELPER UTILITIES & JUICE GENERATORS
 // ==========================================
 function triggerScreenShake() {
   document.body.classList.remove("screen-shake-active");
@@ -442,7 +465,7 @@ function triggerSuccessWave() {
 }
 
 // ==========================================
-// 5. CORE STATE INTERACTION HANDLERS
+// 6. CORE STATE INTERACTION HANDLERS
 // ==========================================
 function loadLevelWord() {
   const wordIndex = (gameState.currentLevel - 1) % WORD_BANK.length;
@@ -605,7 +628,6 @@ function generateNextLetter() {
     const currentGuess = gameState.slots.join("");
     if (currentGuess !== gameState.activeSolution) {
       currentLetterDiv.classList.add("warning-mode");
-      // LARGER, BOLDER WARNING TEXT IN THE GREEN TILE CONTAINER
       currentLetterDiv.innerHTML = `<div style="font-size: 1.05rem; font-weight: 800; color: #ef4444; text-align: center; line-height: 1.3; white-space: nowrap; text-transform: uppercase;">⚠️ Incorrect Word<br>Swap Letters!</div>`;
     } else {
       currentLetterDiv.classList.remove("warning-mode");
@@ -661,7 +683,7 @@ function startTimer() {
 }
 
 // ==========================================
-// 6. ACTION INTERACTION ROUTINES & SINGLE-PASS SWAP ANIMATION
+// 7. ACTION INTERACTION ROUTINES & SINGLE-PASS SWAP ANIMATION
 // ==========================================
 function handleSlotClick(event) {
   if (!gameState.gameActive) return;
@@ -930,6 +952,9 @@ function endGame(isWin, message) {
     gameState.score += scoreEarned; 
     gameState.currentLevel++; 
 
+    // SAVE PROGRESS TO LOCALSTORAGE ON LEVEL VICTORY
+    saveGameProgress();
+
     triggerSuccessWave();
     triggerConfettiRain();
 
@@ -976,7 +1001,7 @@ function updateUI() {
 }
 
 // ==========================================
-// 7. INPUT LISTENERS & INIT RUNS
+// 8. INPUT LISTENERS & INIT RUNS
 // ==========================================
 solveInput.addEventListener("input", () => {
   if (!gameState.gameActive) return;
@@ -1028,7 +1053,6 @@ solveInput.addEventListener("input", () => {
     endGame(true, "You solved the word instantly via typing!");
   } else if (!gameState.slots.includes("")) {
     currentLetterDiv.classList.add("warning-mode");
-    // LARGER, BOLDER WARNING TEXT IN THE GREEN TILE CONTAINER
     currentLetterDiv.innerHTML = `<div style="font-size: 1.05rem; font-weight: 800; color: #ef4444; text-align: center; line-height: 1.3; white-space: nowrap; text-transform: uppercase;">⚠️ Incorrect Word<br>Swap Letters!</div>`;
   }
 });
@@ -1129,4 +1153,6 @@ swapBtn.addEventListener("click", (e) => {
 inlineNextBtn.addEventListener("click", initGame);
 inlineRetryBtn.addEventListener("click", initGame);
 
+// LOAD SAVED GAME PROGRESS ON STARTUP, THEN LAUNCH
+loadGameProgress();
 initGame();
