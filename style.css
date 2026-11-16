@@ -1,3 +1,4 @@
+/* 1. Global Reset & Layout Base */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,127 +6,159 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-
-body {
+html, body {
+  width: 100%;
+  min-height: 100vh;
   background-color: #121213;
   color: #ffffff;
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  overflow: hidden;
+  align-items: flex-start; /* Anchors content to the top */
+  overflow-y: auto;        /* Allows smooth scrolling if screen is compact */
+  overflow-x: hidden;
+  padding: 5px 0;
 }
 
-#game-container {
+#game-container, #app {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   max-width: 500px;
-  padding: 20px;
+  padding: 10px 15px 50px 15px; /* Generous bottom padding to guarantee clearance */
   text-align: center;
+  box-sizing: border-box;
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 700;
   letter-spacing: 2px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   text-transform: uppercase;
 }
 
 /* 2. HUD: Timer & Stats Display */
 #timer-display {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
   color: #ff5555;
   background-color: #272729;
-  padding: 8px 20px;
+  padding: 6px 16px;
   border-radius: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   border: 1px solid #3a3a3c;
 }
 
 /* 3. The Word Slots Board */
 #slots-board {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: 12px;
   width: 100%;
 }
 
 .slot {
-  width: 55px;
-  height: 55px;
+  width: 48px;
+  height: 48px;
   border: 2px solid #3a3a3c;
   border-radius: 6px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: bold;
   text-transform: uppercase;
   cursor: pointer;
   background-color: #1a1a1b;
-  transition: all 0.15s ease;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s;
   user-select: none;
+  position: relative;
+  z-index: 1;
 }
 
-/* When a player hovers over an empty slot */
 .slot:hover {
   border-color: #818384;
   background-color: #272729;
 }
 
-/* When a slot actually contains a letter */
 .slot.filled {
   border-color: #565758;
   background-color: #3a3a3c;
   animation: popIn 0.15s ease-out;
 }
 
-/* 4. Active Letter & Action Zone */
-#active-letter-zone {
+/* 4. Active Letter & Action Zone (Compressed Spacing) */
+#active-letter-zone, #hint-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #1a1a1b;
   border: 1px solid #272729;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 10px 15px;
+  border-radius: 10px;
   width: 100%;
+  margin-bottom: 10px;
 }
 
 #active-letter-zone p {
   color: #818384;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
 #current-letter {
-  width: 70px;
-  height: 70px;
-  background-color: #538d4e; /* Wordle green to draw the eye */
+  width: 55px;
+  height: 55px;
+  background-color: #538d4e;
   border-radius: 8px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   box-shadow: 0 4px 10px rgba(83, 141, 78, 0.3);
+  position: relative;
+  transition: min-width 0.3s ease, padding 0.3s ease;
 }
 
-/* Buttons (Swap and Solve) */
+#current-letter.warning-mode {
+  min-width: 240px;
+  padding: 0 10px;
+}
+
+#guess-zone {
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+#solve-input {
+  padding: 8px 10px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid #3a3a3c;
+  background: #1a1a1b;
+  color: white;
+  width: 65%;
+  text-transform: uppercase;
+}
+
 button {
   background-color: #818384;
   color: white;
   border: none;
-  padding: 12px 24px;
-  font-size: 1rem;
+  padding: 8px 16px;
+  font-size: 0.9rem;
   font-weight: bold;
   border-radius: 6px;
   cursor: pointer;
@@ -144,31 +177,27 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* CSS Animation for when letters are placed */
-@keyframes popIn {
-  0% { transform: scale(0.8); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
+/* 5. Special Tile States & Modifiers */
+.slot.selected {
+  background-color: #3b82f6 !important;
+  border-color: #60a5fa !important;
+  z-index: 10;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+  transform: scale(1.05);
+  animation: pulse 1.5s infinite;
 }
 
-/* Highlights the first selected tile for swapping */
-.slot.selected {
-  border-color: #2f80ed;
-  box-shadow: 0 0 12px rgba(47, 128, 237, 0.6);
-  transform: scale(1.05);
-}
-/* Highlights the first selected tile for swapping */
-.slot.selected {
-  border-color: #2f80ed;
-  box-shadow: 0 0 12px rgba(47, 128, 237, 0.6);
-  transform: scale(1.05);
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
 }
 
-/* The Anchor Tile styling */
 .slot.anchor {
-  background: linear-gradient(135deg, #fbbf24, #d97706) !important; /* Gold gradient */
+  background: linear-gradient(135deg, #fbbf24, #d97706) !important;
   color: #fff !important;
   border-color: #b45309 !important;
-  cursor: not-allowed !important; /* Changes mouse pointer to a "banned" circle */
+  cursor: not-allowed !important;
   font-weight: bold;
   box-shadow: 0 0 15px rgba(217, 119, 6, 0.6);
   animation: goldGlow 2s infinite alternate;
@@ -179,22 +208,8 @@ button:disabled {
   100% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.8); }
 }
 
-.slot.selected {
-  background-color: #3b82f6;
-  border-color: #60a5fa;
-  transform: scale(1.05);
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-}
-
-/* Clean illumination style when correct letter placements match up */
-.correct-match {
-  background-color: #22c55e !important; /* Vivid Green */
+.slot.correct-match, .slot.correct-glow {
+  background-color: #22c55e !important;
   color: #ffffff !important;
   border-color: #15803d !important;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
@@ -202,34 +217,47 @@ button:disabled {
   transition: all 0.25s ease-in-out;
 }
 
-/* Instability state for our un-defused time-bomb blocks */
-.hot-tile {
-  background-color: #f97316 !important; /* Warning Amber Orange */
+.slot.hot-tile, .slot.bomb-tile {
+  background-color: #f97316 !important;
   color: #ffffff !important;
   font-weight: 800;
-  border-color: #ea580c !important;
+  border: 2px dashed #ef4444 !important;
   box-shadow: 0 0 15px rgba(249, 115, 22, 0.4);
-  
-  /* Triggers the slow structural wiggle loop safely */
   animation: slowShake 0.6s infinite ease-in-out;
 }
 
-/* Clear illumination style when correct letter placements match up */
-.correct-match {
-  background-color: #22c55e !important; /* Vivid Green */
-  color: #ffffff !important;
-  border-color: #15803d !important;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
-  transition: all 0.25s ease-in-out;
+.heavy-weight-indicator {
+  font-size: 0.7rem;
+  line-height: 1;
+  margin-top: 2px;
+  display: block;
 }
 
-/* Micro horizontal & rotational shifts creating a low-frequency trembling look */
+.bomb-counter-indicator {
+  font-size: 0.6rem;
+  font-weight: bold;
+  color: #ef4444;
+  margin-top: 1px;
+  display: block;
+}
+
+.preview-heavy-bag {
+  font-size: 0.85rem;
+  margin-top: 2px;
+  display: block;
+}
+
+/* 6. Animations */
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 @keyframes slowShake {
   0%   { transform: translate(0, 0) rotate(0deg); }
   20%  { transform: translate(-1px, 0.5px) rotate(-0.5deg); }
   40%  { transform: translate(1px, -0.5px) rotate(0.5deg); }
   60%  { transform: translate(-1px, -0.5px) rotate(-0.5deg); }
-  80%  { transform: translate(1px, 0.5px) rotate(0.5deg); }
+  80%  { transform: translate(-1px, 0.5px) rotate(0.5deg); }
   100% { transform: translate(0, 0) rotate(0deg); }
 }
